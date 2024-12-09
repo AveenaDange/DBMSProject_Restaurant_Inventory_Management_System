@@ -10,7 +10,7 @@ app.secret_key = 'bad233021f5769cdccf375b84616a46b41872bdb55fc7c23e8b1d34b224d5a
 db = mysql.connector.connect(
     host="localhost",
     user="root",
-    password="aveena@coep2023",
+    password="your_password",
     database="SamosaDB"
 )
 cursor = db.cursor()
