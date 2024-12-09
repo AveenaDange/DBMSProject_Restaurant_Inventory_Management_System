@@ -1,0 +1,147 @@
+CREATE DATABASE SamosaDB;
+
+USE SamosaDB;
+
+-- Users Table: Stores information about users (owners, employees, suppliers)
+CREATE TABLE Users (
+    UserID INT AUTO_INCREMENT PRIMARY KEY,
+    Username VARCHAR(100) UNIQUE,
+    Password VARCHAR(100),
+    Role ENUM('Owner', 'Employee', 'Supplier') NOT NULL,
+    Contact VARCHAR(15)
+);
+
+-- Roles Table: To manage role-based permissions separately (normalization)
+CREATE TABLE Roles (
+    RoleID INT AUTO_INCREMENT PRIMARY KEY,
+    RoleName ENUM('Owner', 'Employee', 'Supplier') UNIQUE
+);
+
+-- Products Table: Stores information about products available in the restaurant
+CREATE TABLE Products (
+    ProductID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) UNIQUE,
+    Description TEXT,
+    Quantity INT CHECK (Quantity >= 0),
+    Price DECIMAL(10, 2) CHECK (Price >= 0),
+    ReorderLevel INT CHECK (ReorderLevel >= 0)
+);
+
+-- Suppliers Table: Stores supplier details
+CREATE TABLE Suppliers (
+    SupplierID INT AUTO_INCREMENT PRIMARY KEY,
+    Name VARCHAR(100) UNIQUE,
+    Contact VARCHAR(15),
+    Email VARCHAR(100) UNIQUE,
+    Address TEXT
+);
+
+-- Orders Table: Stores order details, linking suppliers to the orders placed
+CREATE TABLE Orders (
+    OrderID INT AUTO_INCREMENT PRIMARY KEY,
+    SupplierID INT,
+    OrderDate DATE,
+    TotalAmount DECIMAL(10, 2) CHECK (TotalAmount >= 0),
+    FOREIGN KEY (SupplierID) REFERENCES Suppliers(SupplierID)
+);
+
+-- OrderDetails Table: Contains details of each product in an order (many-to-many relationship between Orders and Products)
+CREATE TABLE OrderDetails (
+    OrderDetailID INT AUTO_INCREMENT PRIMARY KEY,
+    OrderID INT,
+    ProductID INT,
+    Quantity INT CHECK (Quantity >= 0),
+    PricePerUnit DECIMAL(10, 2) CHECK (PricePerUnit >= 0),
+    FOREIGN KEY (OrderID) REFERENCES Orders(OrderID),
+    FOREIGN KEY (ProductID) REFERENCES Products(ProductID)
+);
+
+-- Tasks Table: Stores tasks assigned to employees
+CREATE TABLE Tasks (
+    TaskID INT AUTO_INCREMENT PRIMARY KEY,
+    AssignedTo INT,
+    Description TEXT,
+    Status ENUM('Pending', 'In Progress', 'Completed') DEFAULT 'Pending',
+    DueDate DATE,
+    FOREIGN KEY (AssignedTo) REFERENCES Users(UserID)
+);
+
+
+
+
+INSERT INTO Users (Username, Password, Role, Contact) VALUES
+('owner1', 'password123', 'Owner', '9998887771'),
+('employee1', 'password123', 'Employee', '9998887772'),
+('employee2', 'password123', 'Employee', '9998887773'),
+('supplier1', 'password123', 'Supplier', '9998887774');
+
+
+INSERT INTO Suppliers (Name, Contact, Email, Address) VALUES
+('ABC Supplies', '9998887774', 'abc@supplies.com', '123 Main St, City A'),
+('XYZ Distributors', '9998887775', 'xyz@distributors.com', '456 Market Rd, City B'),
+('PQR Wholesale', '9998887776', 'pqr@wholesale.com', '789 Industrial Ave, City C');
+
+
+INSERT INTO Products (Name, Description, Quantity, Price, ReorderLevel) VALUES
+('Potatoes', 'Fresh potatoes for samosa filling', 500, 2.00, 50),
+('Flour', 'All-purpose flour for samosa dough', 300, 1.50, 30),
+('Oil', 'Cooking oil for frying', 100, 5.00, 20),
+('Green Chili', 'Fresh green chilies for chutney', 200, 0.50, 25),
+('Yogurt', 'Fresh yogurt for mango lassi', 100, 3.00, 10),
+('Tea Leaves', 'High-quality tea leaves', 150, 4.00, 20),
+('Paneer', 'Cottage cheese for pakoda', 80, 6.00, 10),
+('Sugar', 'Granulated sugar for lassi', 150, 1.20, 20),
+('Salt', 'Common salt for seasoning', 200, 0.30, 25);
+
+INSERT INTO Tasks (AssignedTo, Description, Status, DueDate) VALUES
+((SELECT UserID FROM Users WHERE Username = 'employee1'), 'Check inventory levels for potatoes and flour.', 'Pending', '2024-12-06'),
+((SELECT UserID FROM Users WHERE Username = 'employee1'), 'Update supplier contact details.', 'In Progress', '2024-12-07'),
+((SELECT UserID FROM Users WHERE Username = 'employee2'), 'Prepare weekly sales report.', 'Pending', '2024-12-08'),
+((SELECT UserID FROM Users WHERE Username = 'employee2'), 'Restock cooking oil from XYZ Distributors.', 'Completed', '2024-12-05'),
+((SELECT UserID FROM Users WHERE Username = 'employee1'), 'Supervise staff training on food safety.', 'Pending', '2024-12-10');
+
+
+INSERT INTO Orders (SupplierID, OrderDate, TotalAmount) VALUES
+((SELECT SupplierID FROM Suppliers WHERE Name = 'ABC Supplies'), '2024-12-01', 500.00),
+((SELECT SupplierID FROM Suppliers WHERE Name = 'XYZ Distributors'), '2024-12-03', 300.00),
+((SELECT SupplierID FROM Suppliers WHERE Name = 'PQR Wholesale'), '2024-12-04', 400.00);
+
+
+INSERT INTO OrderDetails (OrderID, ProductID, Quantity, PricePerUnit) VALUES
+-- Order 1 Details
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'ABC Supplies') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Potatoes'), 100, 2.00),
+
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'ABC Supplies') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Flour'), 50, 1.50),
+
+-- Order 2 Details
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'XYZ Distributors') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Oil'), 20, 5.00),
+
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'XYZ Distributors') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Green Chili'), 50, 0.50),
+
+-- Order 3 Details
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'PQR Wholesale') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Tea Leaves'), 40, 4.00),
+
+((SELECT OrderID FROM Orders WHERE SupplierID = (SELECT SupplierID FROM Suppliers WHERE Name = 'PQR Wholesale') LIMIT 1), 
+ (SELECT ProductID FROM Products WHERE Name = 'Paneer'), 30, 6.00);
+
+
+
+-- Disable foreign key checks to avoid constraint errors during deletion
+SET FOREIGN_KEY_CHECKS = 0;
+
+
+-- Delete all data from dependent tables first to avoid foreign key issues
+DELETE FROM OrderDetails;
+DELETE FROM Orders;
+DELETE FROM Tasks;
+DELETE FROM Products;
+DELETE FROM Suppliers;
+DELETE FROM Users;
+
+-- Re-enable foreign key checks after data deletion
+SET FOREIGN_KEY_CHECKS = 1;
