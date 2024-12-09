@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Task</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Add Task</h1>
+    <form action="/add_task" method="POST">
+        <label for="assignedTo">Assign To:</label>
+        <select id="assignedTo" name="assigned_to" required>
+            {% for user in users %}
+            <option value="{{ user[0] }}">{{ user[1] }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="description">Task Description:</label>
+        <textarea id="description" name="description" required></textarea><br><br>
+
+        <label for="status">Status:</label>
+        <select id="status" name="status" required>
+            <option value="Pending">Pending</option>
+            <option value="In Progress">In Progress</option>
+            <option value="Completed">Completed</option>
+        </select><br><br>
+
+        <label for="dueDate">Due Date:</label>
+        <input type="date" id="dueDate" name="due_date" required><br><br>
+
+        <input type="submit" value="Add Task">
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add User</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Add User</h1>
+    <form action="/add_user" method="POST">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
+
+        <label for="role">Role:</label>
+        <select id="role" name="role" required>
+            <option value="Owner">Owner</option>
+            <option value="Employee">Employee</option>
+            <option value="Supplier">Supplier</option>
+        </select><br><br>
+
+        <label for="contact">Contact:</label>
+        <input type="text" id="contact" name="contact" required><br><br>
+
+        <input type="submit" value="Add User">
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

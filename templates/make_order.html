@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Order</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Add Order</h1>
+    <form action="/make_order" method="POST">
+        <label for="supplier">Select Supplier:</label>
+        <select id="supplier" name="supplier_id" required>
+            {% for supplier in suppliers %}
+            <option value="{{ supplier[0] }}">{{ supplier[1] }}</option>
+            {% endfor %}
+        </select><br><br>
+
+        <label for="order_date">Order Date:</label>
+        <input type="date" id="order_date" name="order_date" required><br><br>
+
+        <label for="total_amount">Total Amount:</label>
+        <input type="number" step="0.01" id="total_amount" name="total_amount" required><br><br>
+
+        <input type="submit" value="Add Order">
+    </form>
+    <a href="/">Back to Home</a>
+</body>
+</html>

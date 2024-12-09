@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Order</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <h1>Edit Order Information</h1>
+    <form method="POST">
+        <label for="supplier_id">Select Supplier:</label>
+        <select id="supplier_id" name="supplier_id" required>
+            {% for supplier in suppliers %}
+                <option value="{{ supplier[0] }}" {% if order[1] == supplier[0] %}selected{% endif %}>
+                    {{ supplier[1] }}
+                </option>
+            {% endfor %}
+        </select><br><br>
+        
+        <label for="order_date">Order Date:</label>
+        <input type="date" id="order_date" name="order_date" value="{{ order[3] }}" required><br><br>
+        
+        <label for="total_amount">Total Amount:</label>
+        <input type="number" step="0.01" id="total_amount" name="total_amount" value="{{ order[4] }}" required><br><br>
+        
+        <button type="submit">Update Order</button>
+    </form>
+    <a href="/orders">Back to Order List</a>
+</body>
+</html>

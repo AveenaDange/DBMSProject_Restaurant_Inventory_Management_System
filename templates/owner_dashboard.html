@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamosaDB Management System</title>
+    <style>
+        /* General Styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff8e1; /* Warm beige background */
+            color: #333;
+        }
+
+        header {
+            background: linear-gradient(to right, #ff4500, #ffcc00); /* Gradient header */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        header .logout-btn {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            background-color: #ff4500;
+            color: white;
+            text-decoration: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        header .logout-btn:hover {
+            background-color: #ffcc00;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            display: flex;
+            justify-content: center;
+            background-color: #ff5722; /* Vibrant orange navbar */
+            padding: 10px 0;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+
+        .navbar a:hover {
+            background-color: #ffcc00; /* Yellow on hover */
+            color: #333;
+        }
+
+        .navbar .dropdown {
+            position: relative;
+        }
+
+        .navbar .dropdown:hover .dropdown-content {
+            display: block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background-color: white;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+            overflow: hidden;
+        }
+
+        .dropdown-content a {
+            color: #333;
+            padding: 10px 15px;
+            display: block;
+            text-align: left;
+            transition: background-color 0.3s;
+        }
+
+        .dropdown-content a:hover {
+            background-color: #ffe082; /* Light yellow hover effect */
+        }
+
+        /* Main Content Area */
+        .content {
+            text-align: center;
+            margin: 30px;
+        }
+
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .content h2 {
+            margin-top: 20px;
+            font-size: 24px;
+            color: #ff4500;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Samosa & Company Inventory Management System</h1>
+        <!-- Logout Button -->
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </header>
+
+    <nav class="navbar">
+        <div class="dropdown">
+            <a href="#">User Management</a>
+            <div class="dropdown-content">
+                <a href="/users">View Users</a>
+                <a href="/add_user">Add User</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Product Management</a>
+            <div class="dropdown-content">
+                <a href="/products">View Products</a>
+                <a href="/add_product">Add Product</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Supplier Management</a>
+            <div class="dropdown-content">
+                <a href="/suppliers">View Suppliers</a>
+                <a href="/add_supplier">Add Supplier</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Order Management</a>
+            <div class="dropdown-content">
+                <a href="/orders">View Orders</a>
+                <a href="/make_order">Create Order</a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <a href="#">Task Management</a>
+            <div class="dropdown-content">
+                <a href="/tasks">View Tasks</a>
+                <a href="/add_task">Add Task</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="content">
+        <img src="/static/download.png" alt="Samosa Image">
+        <h2>Welcome to the SamosaDB Management System!</h2>
+    </div>
+</body>
+</html>

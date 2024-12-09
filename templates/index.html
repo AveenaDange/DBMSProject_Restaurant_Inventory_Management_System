@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SamosaDB Management System</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <header>
+        <h1>Samosa & Company Inventory Management System</h1>
+        <!-- Logout Button -->
+        <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+    </header>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="menu">
+                <h3>User Management <span class="arrow" onclick="toggleDropdown('userDropdown')">▼</span></h3>
+                <div id="userDropdown" class="dropdown-content">
+                    <a href="/users">View Users</a>
+                    <a href="/add_user">Add User</a>
+                </div>
+            </div>
+
+            <div class="menu">
+                <h3>Product Management <span class="arrow" onclick="toggleDropdown('productDropdown')">▼</span></h3>
+                <div id="productDropdown" class="dropdown-content">
+                    <a href="/products">View Products</a>
+                    <a href="/add_product">Add Product</a>
+                </div>
+            </div>
+
+            <div class="menu">
+                <h3>Supplier Management <span class="arrow" onclick="toggleDropdown('supplierDropdown')">▼</span></h3>
+                <div id="supplierDropdown" class="dropdown-content">
+                    <a href="/suppliers">View Suppliers</a>
+                    <a href="/add_supplier">Add Supplier</a>
+                </div>
+            </div>
+
+            <div class="menu">
+                <h3>Order Management <span class="arrow" onclick="toggleDropdown('orderDropdown')">▼</span></h3>
+                <div id="orderDropdown" class="dropdown-content">
+                    <a href="/orders">View Orders</a>
+                    <a href="/make_order">Create Order</a>
+                </div>
+            </div>
+
+            <div class="menu">
+                <h3>Task Management <span class="arrow" onclick="toggleDropdown('taskDropdown')">▼</span></h3>
+                <div id="taskDropdown" class="dropdown-content">
+                    <a href="/tasks">View Tasks</a>
+                    <a href="/add_task">Add Task</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="content">
+            <img src="/static/download.png" alt="Samosa Image" class="main-image">
+        </div>
+    </div>
+
+    <script>
+        function toggleDropdown(dropdownId) {
+            const dropdown = document.getElementById(dropdownId);
+            dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Optional: Close dropdown if clicked outside
+        window.onclick = function(event) {
+            if (!event.target.matches('.arrow') && !event.target.matches('.menu h3')) {
+                const dropdowns = document.getElementsByClassName('dropdown-content');
+                for (let i = 0; i < dropdowns.length; i++) {
+                    dropdowns[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
+</body>
+</html>
